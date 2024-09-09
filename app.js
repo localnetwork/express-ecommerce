@@ -16,6 +16,18 @@ fs.readdirSync(routesPath).forEach((file) => {
   app.use("/api", route);
 });
 
+// Handle 404 - Route not found
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Not Found" });
+});
+
+// Handle other errors (optional)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  console.log("err", err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
 app.listen(process.env.APP_PORT || 1000, () => {
   console.log(`Running http://localhost:${process.env.APP_PORT || 1000}`);
 });
